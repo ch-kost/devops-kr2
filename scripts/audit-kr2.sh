@@ -16,9 +16,12 @@ port_loopback() {
   [[ $("$ROOT/scripts/compose.sh" "$variant" port app "$APP_PORT") == "127.0.0.1:$APP_PORT" ]]
 }
 env_private() { [[ $(stat -c '%a' "$ROOT/.env") == 600 ]]; }
-cert_lifetime() { openssl x509 -checkend 2592000 -noout -in /etc/ssl/certs/kr2.crt; }
+cert_path=${KR2_CERT_PATH:-/etc/ssl/certs/kr2.crt}
+site_link=${KR2_SITE_LINK:-/etc/nginx/sites-enabled/kr2}
+site_config=${KR2_SITE_CONFIG:-/etc/nginx/sites-available/kr2}
+cert_lifetime() { openssl x509 -checkend 2592000 -noout -in "$cert_path"; }
 site_enabled() {
-  [[ -L /etc/nginx/sites-enabled/kr2 ]] && [[ $(readlink -f /etc/nginx/sites-enabled/kr2) == /etc/nginx/sites-available/kr2 ]]
+  [[ -L "$site_link" ]] && [[ $(readlink -f "$site_link") == "$site_config" ]]
 }
 printf '[6] Контрольная работа № 2\n'
 check 'Redis healthy' redis_healthy

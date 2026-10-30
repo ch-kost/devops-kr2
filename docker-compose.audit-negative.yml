@@ -1,0 +1,5 @@
+# Safe local fault: wrong loopback address; does not expose the port to the LAN.
+services:
+  app:
+    ports: !override
+      - "127.0.0.2:${APP_PORT:-8001}:${APP_PORT:-8001}"

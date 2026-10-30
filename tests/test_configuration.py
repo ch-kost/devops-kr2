@@ -33,8 +33,9 @@ class ConfigurationTests(unittest.TestCase):
         self.assertIn("$$REDIS_PASSWORD", redis["healthcheck"]["test"][1])
         self.assertEqual(redis["volumes"], ["redis_data:/data"])
         self.assertIn("redis_data", cfg["volumes"])
+        self.assertEqual(redis["networks"], ["backend"])
+        self.assertEqual(app["networks"], ["backend", "ingress"])
         for service in (app, redis):
-            self.assertEqual(service["networks"], ["backend"])
             self.assertEqual(service["restart"], "unless-stopped")
 
     def test_dockerfile_exec_user_cache_and_context(self):

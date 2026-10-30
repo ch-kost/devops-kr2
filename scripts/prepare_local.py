@@ -22,5 +22,8 @@ if not (certs / "kr2.crt").exists():
 config = (root / "nginx/kr2.conf.template").read_text().replace("__DOMAIN__", domain).replace("__PORT__", port)
 config = config.replace("http://127.0.0.1:", "http://app:").replace("/etc/ssl/certs/kr2.crt", "/etc/kr2/kr2.crt").replace("/etc/ssl/private/kr2.key", "/etc/kr2/kr2.key")
 (certs / "nginx.conf").write_text("events {}\nhttp {\n" + config + "\n}\n")
+enabled = certs / "kr2-enabled"
+if not enabled.is_symlink():
+    enabled.symlink_to("/certs/nginx.conf")
 print(f"Local lab prepared for provisional variant {variant}: {domain}, application {port}")
 print("Secret and private key remain only in Linux Docker volumes")

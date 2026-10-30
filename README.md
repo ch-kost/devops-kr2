@@ -20,7 +20,7 @@
 ## Состав
 
 - `Dockerfile` — Python 3.12 slim, UID 10001, кэш зависимостей, exec-форма Gunicorn.
-- `docker-compose.yml` — app и Redis 7 Alpine, изолированная backend-сеть, именованный том, healthcheck, loopback-публикация.
+- `docker-compose.yml` — app и Redis 7 Alpine, изолированная backend-сеть, именованный том, healthcheck, loopback-публикация. Приложение дополнительно подключено к отдельной ingress-сети для публикации порта; Redis остаётся только во внутренней backend-сети.
 - `nginx/kr2.conf.template` — отдельный HTTPS-ресурс VM, HTTP→HTTPS и заголовки прокси.
 - `scripts/init_env.py` — безопасная генерация нового секрета на Linux без вывода значения.
 - `scripts/compose.sh N …` — запуск выбранного варианта без рассогласования пароля оболочки и env_file.
