@@ -25,8 +25,7 @@
 - `scripts/init_env.py` — безопасная генерация нового секрета на Linux без вывода значения.
 - `scripts/compose.sh N …` — запуск выбранного варианта без рассогласования пароля оболочки и env_file.
 - `scripts/deploy.sh` — пробная доставка rsync, затем явная доставка с `--apply`.
-- `scripts/audit-kr2.sh N` — пять проверок дополнительного раздела [6].
-- `docs/defects.md` — ревизия исходного шаблона; `docs/defense-answers.md` — 14 ответов.
+- `docs/defects.md` — ревизия исходного шаблона; `docs/mandatory-answers.md` — письменные объяснения из обязательных заданий.
 - `docker-compose.local-test.yml` и `scripts/local_lab.py` — отдельный проверочный стенд Docker Desktop.
 
 ## Развёртывание на существующей devops-vm
@@ -51,7 +50,6 @@ bash scripts/compose.sh 1 up -d --build --wait
 bash scripts/configure-nginx.sh 1
 # Просмотреть конфигурацию; установка не меняет devops-site или правила UFW.
 bash scripts/configure-nginx.sh 1 --apply
-bash scripts/audit-kr2.sh 1
 ```
 
 Пароль создаётся новым случайным значением (64 hex-символа), хранится только в серверном `.env` с правами 600. Закрытый TLS-ключ создаётся на сервере с владельцем root и правами 600. Существующие файлы скрипты не перезаписывают. Не выводить `docker compose config` или полный `docker inspect`: учебная передача `--requirepass` оставляет пароль в аргументах контейнера, доступных администратору Docker.

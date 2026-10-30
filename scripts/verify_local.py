@@ -62,9 +62,6 @@ lab("docker-dns", "exec", "-T", "app", "getent", "hosts", "redis")
 noauth = lab("redis-auth-required", "exec", "-T", "redis", "redis-cli", "ping")
 assert "NOAUTH" in noauth
 lab("secret-check", "secret-check")
-lab("audit-real-local", "audit")
-lab("audit-negative-restored", "audit-negative")
-lab("audit-wildcard-fixture", "audit-selftest")
 curl = "curl.exe" if sys.platform == "win32" else "curl"
 health = run("health", [curl, "--noproxy", "*", "-fsS", "http://127.0.0.1:8001/health"])
 assert health == "ok\n"
