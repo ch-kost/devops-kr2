@@ -1,9 +1,18 @@
-FROM python:latest
+FROM python:3.12-slim
 
 WORKDIR /app
 
-COPY . .
-RUN pip install -r requirements.txt
+ARG APP_PORT=8001
+ENV APP_PORT=${APP_PORT} \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
-EXPOSE 8000
-CMD gunicorn --bind 127.0.0.1:8000 app:app
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt \
+    && useradd --uid 10001 --create-home --shell /usr/sbin/nologin appuser
+
+COPY --chown=10001:10001 app.py gunicorn.conf.py ./
+USER 10001:10001
+
+EXPOSE ${APP_PORT}
+CMD ["gunicorn", "--config", "gunicorn.conf.py", "app:app"]
