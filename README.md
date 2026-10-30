@@ -28,6 +28,16 @@
 - `docs/defects.md` — ревизия исходного шаблона; `docs/mandatory-answers.md` — письменные объяснения из обязательных заданий.
 - `docker-compose.local-test.yml` и `scripts/local_lab.py` — отдельный проверочный стенд Docker Desktop.
 
+## Результат проверки на devops-vm
+
+Вариант 1 подтверждён номером в списке 29. Приложение развёрнуто на Ubuntu 24.04.5 LTS в VirtualBox, 2 CPU, 2048 МБ, 25 ГБ, NAT и Host-only. Адрес сервера 192.168.56.101, SSH по ключу: `ssh devops` (порт 2222). Ресурс: https://api.devops.local/.
+
+Docker Engine 29.9.2; app UID 10001, Redis UID 999 и healthy. Новый серверный секрет имеет права 600 и владельца devops. Публикация app — только 127.0.0.1:8001, Redis не опубликован. Счётчик сохранился после down/up без -v: 4 → 5. При повторной сборке зависимости использовали CACHED.
+
+С Windows подтверждены HTTP301, отказ TLS без доверия, успешный curl с --cacert, SAN api.devops.local и /whoami с scheme=https, client=192.168.56.1. Старые HTTPS-ресурсы со статикой и PostgreSQL доступны. Аудит разделов 1–5: 15 passed, 0 failed, exit0. Правила UFW и SHA256 devops-site не изменены. Созданы снимки 01–07.
+
+Предыдущая конфигурация сервера и аудит: https://github.com/ch-kost/devops-course-2026/tree/codex/kr2-server-baseline (103628f). Проверенный код №8: d2936b4; последующий коммит уточняет документацию. Полные выводы команд и снимки экрана приложены к отчёту. PR №1 оставлен открытым до защиты. Устная защита и неисправность от преподавателя выполняются на занятии.
+
 ## Развёртывание на существующей devops-vm
 
 Выполнять на Ubuntu из ПР №5–7. До доставки проверить `scripts/audit.sh` прежнего репозитория, HTTPS-ресурсы и снимки VM; создать `06-before-kr2`, сохранить `sudo ufw status numbered > ~/ufw-before-kr2.txt`. Эти действия и снимки не подменяются контейнером Docker Desktop.
